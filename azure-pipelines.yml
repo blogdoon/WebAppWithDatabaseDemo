@@ -93,12 +93,12 @@ stages:
         PathtoPublish: '$(build.artifactstagingdirectory)'
         ArtifactName: drop
 
-  - job: Database
-    displayName: Build Database Job
-    pool:
-      name: Hosted Windows 2019 with VS2019 
-      vmImage: 'windows-2019'
-      demands: msbuild
+  # - job: Database
+  #   displayName: Build Database Job
+  #   pool:
+  #     name: Hosted Windows 2019 with VS2019 
+  #     vmImage: 'windows-2019'
+  #     demands: msbuild
 
     steps:
     - task: MSBuild@1
@@ -112,12 +112,12 @@ stages:
       inputs:
         ArtifactName: dacpac
 
-  - job: Selenium
-    displayName: Build UI Tests Job
-    pool:
-      name: Hosted Windows 2019 with VS2019 
-      vmImage: 'windows-2019'
-      demands: msbuild
+  # - job: Selenium
+  #   displayName: Build UI Tests Job
+  #   pool:
+  #     name: Hosted Windows 2019 with VS2019 
+  #     vmImage: 'windows-2019'
+  #     demands: msbuild
 
     steps:
     - task: NuGetToolInstaller@0
@@ -128,11 +128,11 @@ stages:
       inputs:
         restoreSolution: WebAppWithDatabase.sln
 
-    - task: MSBuild@1
-      displayName: Build project SeleniumUiTests.csproj
-      inputs:
-        solution: SeleniumUiTests/SeleniumUiTests.csproj
-        msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
+    # - task: MSBuild@1
+    #   displayName: Build project SeleniumUiTests.csproj
+    #   inputs:
+    #     solution: SeleniumUiTests/SeleniumUiTests.csproj
+    #     msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
 
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: UI-Test'
@@ -257,16 +257,16 @@ stages:
       inputs:
         script: |
           ls $(System.DefaultWorkingDirectory)
-    - task: AzureRmWebAppDeployment@3
-      displayName: Deploy Web App to Azure App Service
-      enabled: 'true'
-      inputs:
-        azureSubscription: 'Microsoft Azure Sponsorship (5a56fb34-f1c5-4669-9412-4592bb81a2cf)'
-        appType: 'webApp'
-        WebAppName: '$(WebAppName)'
-        TakeAppOfflineFlag: true
-        JSONFiles: '**/appsettings.json'
-        packageForLinux: '$(System.DefaultWorkingDirectory)/drop/WebApp.zip' #'$(System.ArtifactsDirectory)/**/drop/WebApp.zip'
+    # - task: AzureRmWebAppDeployment@3
+    #   displayName: Deploy Web App to Azure App Service
+    #   enabled: 'true'
+    #   inputs:
+    #     azureSubscription: 'Microsoft Azure Sponsorship (5a56fb34-f1c5-4669-9412-4592bb81a2cf)'
+    #     appType: 'webApp'
+    #     WebAppName: '$(WebAppName)'
+    #     TakeAppOfflineFlag: true
+    #     JSONFiles: '**/appsettings.json'
+    #     packageForLinux: '$(System.DefaultWorkingDirectory)/drop/WebApp.zip' #'$(System.ArtifactsDirectory)/**/drop/WebApp.zip'
 
 
 
@@ -298,18 +298,18 @@ stages:
         itemPattern: ''
         downloadPath: '$(System.DefaultWorkingDirectory)'
 
-    - task: VSTest@2
-      displayName: Selenium UI Tests
-      inputs:
-        testSelector: 'testAssemblies'
-        searchFolder: '$(System.DefaultWorkingDirectory)/ui-tests'
-        runSettingsFile: '$(System.DefaultWorkingDirectory)/ui-tests/.runsettings'
-        overrideTestrunParameters: '-webAppUrl $(WebAppNameUrl)'
-        testAssemblyVer2: '**\*test*.dll
-              !**\*TestAdapter.dll
-              !**\obj\**'
-        runInParallel: false
-        codeCoverageEnabled: false
+    # - task: VSTest@2
+    #   displayName: Selenium UI Tests
+    #   inputs:
+    #     testSelector: 'testAssemblies'
+    #     searchFolder: '$(System.DefaultWorkingDirectory)/ui-tests'
+    #     runSettingsFile: '$(System.DefaultWorkingDirectory)/ui-tests/.runsettings'
+    #     overrideTestrunParameters: '-webAppUrl $(WebAppNameUrl)'
+    #     testAssemblyVer2: '**\*test*.dll
+    #           !**\*TestAdapter.dll
+    #           !**\obj\**'
+    #     runInParallel: false
+    #     codeCoverageEnabled: false
 
 
 - stage: Test_Stage
