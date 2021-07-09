@@ -145,11 +145,11 @@ stages:
       name: Hosted Ubuntu 1604
       vmImage: 'ubuntu-16.04'
     steps:
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: Terraform'
-      inputs:
-        PathtoPublish: Terraform
-        ArtifactName: terraform
+    # - task: PublishBuildArtifacts@1
+    #   displayName: 'Publish Artifact: Terraform'
+    #   inputs:
+    #     PathtoPublish: Terraform
+    #     ArtifactName: terraform
     - task: PublishBuildArtifacts@1
       displayName: 'Publish Artifact: ARM templates'
       inputs:
