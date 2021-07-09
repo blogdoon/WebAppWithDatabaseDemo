@@ -100,12 +100,12 @@ stages:
   #     vmImage: 'windows-2019'
   #     demands: msbuild
 
-    steps:
-    - task: MSBuild@1
-      displayName: Build solution WebApp.Database.sqlproj
-      inputs:
-        solution: WebApp.Database/WebApp.Database.sqlproj
-        msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
+    # steps:
+    # - task: MSBuild@1
+    #   displayName: Build solution WebApp.Database.sqlproj
+    #   inputs:
+    #     solution: WebApp.Database/WebApp.Database.sqlproj
+    #     msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
 
     - task: PublishBuildArtifacts@1
       displayName: Publish Artifact (Dacpac)
