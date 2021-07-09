@@ -134,27 +134,27 @@ stages:
     #     solution: SeleniumUiTests/SeleniumUiTests.csproj
     #     msbuildArguments: '/p:OutDir=$(Build.ArtifactStagingDirectory)'
 
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: UI-Test'
-      inputs:
-        ArtifactName: ui-tests
+  #   - task: PublishBuildArtifacts@1
+  #     displayName: 'Publish Artifact: UI-Test'
+  #     inputs:
+  #       ArtifactName: ui-tests
 
-  - job: Infrastructure
-    displayName: Publish Infra files Job
-    pool:
-      name: Hosted Ubuntu 1604
-      vmImage: 'ubuntu-16.04'
-    steps:
+  # - job: Infrastructure
+  #   displayName: Publish Infra files Job
+  #   pool:
+  #     name: Hosted Ubuntu 1604
+  #     vmImage: 'ubuntu-16.04'
+  #   steps:
     # - task: PublishBuildArtifacts@1
     #   displayName: 'Publish Artifact: Terraform'
     #   inputs:
     #     PathtoPublish: Terraform
     #     ArtifactName: terraform
-    - task: PublishBuildArtifacts@1
-      displayName: 'Publish Artifact: ARM templates'
-      inputs:
-        PathtoPublish: AzureResourceGroupDeployment
-        ArtifactName: arm
+    # - task: PublishBuildArtifacts@1
+    #   displayName: 'Publish Artifact: ARM templates'
+    #   inputs:
+    #     PathtoPublish: AzureResourceGroupDeployment
+    #     ArtifactName: arm
 
 - stage: Dev_Stage
   displayName: Dev Stage
@@ -178,8 +178,8 @@ stages:
       Release.EnvironmentName: 'dev'
       UniqueId: '1280' #'$(Build.BuildId)'
 
-    steps:
-    - checkout: none
+    # steps:
+    # - checkout: none
     # - task: DownloadBuildArtifacts@0
     #   displayName: Download Build Artifacts
     #   inputs:
@@ -216,47 +216,47 @@ stages:
     #     ConnectedServiceNameARM: 'Microsoft Azure Sponsorship (5a56fb34-f1c5-4669-9412-4592bb81a2cf)'
     #     ManageState: false
 
-    - task: AzureResourceGroupDeployment@2
-      displayName: Validate ARM template
-      enabled: 'false'
-      inputs:
-        azureSubscription: 'Microsoft Azure Sponsorship (5a56fb34-f1c5-4669-9412-4592bb81a2cf)'
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: '$(ResourceGroupName)'
-        location: 'West Europe'
-        templateLocation: 'Linked artifact'
-        csmFile: '$(System.DefaultWorkingDirectory)/**/arm/WebSiteSQLDatabase.json'
-        csmParametersFile: '$(System.DefaultWorkingDirectory)/**/arm/WebSiteSQLDatabase.parameters.json'
-        overrideParameters: '-hostingPlanName "houssemdellai-service-plan" -skuName "F1" -skuCapacity 1 -administratorLogin $(Database.Admin) -administratorLoginPassword $(Database.Password) -databaseName $(Database.Name) -collation "SQL_Latin1_General_CP1_CI_AS" -edition "Basic" -maxSizeBytes "1073741824" -requestedServiceObjectiveName "Basic" -webSiteName $(WebAppName) -sqlserverName $(SqlServerName)'
-        deploymentMode: Validation
+    # - task: AzureResourceGroupDeployment@2
+    #   displayName: Validate ARM template
+    #   enabled: 'false'
+    #   inputs:
+    #     azureSubscription: 'Microsoft Azure Sponsorship (5a56fb34-f1c5-4669-9412-4592bb81a2cf)'
+    #     action: 'Create Or Update Resource Group'
+    #     resourceGroupName: '$(ResourceGroupName)'
+    #     location: 'West Europe'
+    #     templateLocation: 'Linked artifact'
+    #     csmFile: '$(System.DefaultWorkingDirectory)/**/arm/WebSiteSQLDatabase.json'
+    #     csmParametersFile: '$(System.DefaultWorkingDirectory)/**/arm/WebSiteSQLDatabase.parameters.json'
+    #     overrideParameters: '-hostingPlanName "houssemdellai-service-plan" -skuName "F1" -skuCapacity 1 -administratorLogin $(Database.Admin) -administratorLoginPassword $(Database.Password) -databaseName $(Database.Name) -collation "SQL_Latin1_General_CP1_CI_AS" -edition "Basic" -maxSizeBytes "1073741824" -requestedServiceObjectiveName "Basic" -webSiteName $(WebAppName) -sqlserverName $(SqlServerName)'
+    #     deploymentMode: Validation
 
-    - task: AzureResourceGroupDeployment@2
-      displayName: Create Or Update Resource Group
-      enabled: 'false'
-      inputs:
-        azureSubscription: 'Microsoft Azure Sponsorship (5a56fb34-f1c5-4669-9412-4592bb81a2cf)'
-        action: 'Create Or Update Resource Group'
-        resourceGroupName: '$(ResourceGroupName)'
-        location: 'West Europe'
-        templateLocation: 'Linked artifact'
-        csmFile: '$(System.DefaultWorkingDirectory)/**/arm/WebSiteSQLDatabase.json'
-        csmParametersFile: '$(System.DefaultWorkingDirectory)/**/arm/WebSiteSQLDatabase.parameters.json'
-        overrideParameters: '-hostingPlanName "houssemdellai-service-plan" -skuName "F1" -skuCapacity 1 -administratorLogin $(Database.Admin) -administratorLoginPassword $(Database.Password) -databaseName $(Database.Name) -collation "SQL_Latin1_General_CP1_CI_AS" -edition "Basic" -maxSizeBytes "1073741824" -requestedServiceObjectiveName "Basic" -webSiteName $(WebAppName) -sqlserverName $(SqlServerName)'
-        deploymentMode: Complete
+    # - task: AzureResourceGroupDeployment@2
+    #   displayName: Create Or Update Resource Group
+    #   enabled: 'false'
+    #   inputs:
+    #     azureSubscription: 'Microsoft Azure Sponsorship (5a56fb34-f1c5-4669-9412-4592bb81a2cf)'
+    #     action: 'Create Or Update Resource Group'
+    #     resourceGroupName: '$(ResourceGroupName)'
+    #     location: 'West Europe'
+    #     templateLocation: 'Linked artifact'
+    #     csmFile: '$(System.DefaultWorkingDirectory)/**/arm/WebSiteSQLDatabase.json'
+    #     csmParametersFile: '$(System.DefaultWorkingDirectory)/**/arm/WebSiteSQLDatabase.parameters.json'
+    #     overrideParameters: '-hostingPlanName "houssemdellai-service-plan" -skuName "F1" -skuCapacity 1 -administratorLogin $(Database.Admin) -administratorLoginPassword $(Database.Password) -databaseName $(Database.Name) -collation "SQL_Latin1_General_CP1_CI_AS" -edition "Basic" -maxSizeBytes "1073741824" -requestedServiceObjectiveName "Basic" -webSiteName $(WebAppName) -sqlserverName $(SqlServerName)'
+    #     deploymentMode: Complete
 
-    - task: DownloadBuildArtifacts@0    
-      displayName: Download WebApp.zip
-      inputs:
-        buildType: 'current'
-        downloadType: 'single'
-        artifactName: 'drop'
-        itemPattern: '**/WebApp.zip'
-        downloadPath: '$(System.DefaultWorkingDirectory)'
+    # - task: DownloadBuildArtifacts@0    
+    #   displayName: Download WebApp.zip
+    #   inputs:
+    #     buildType: 'current'
+    #     downloadType: 'single'
+    #     artifactName: 'drop'
+    #     itemPattern: '**/WebApp.zip'
+    #     downloadPath: '$(System.DefaultWorkingDirectory)'
 
-    - task: CmdLine@2
-      inputs:
-        script: |
-          ls $(System.DefaultWorkingDirectory)
+    # - task: CmdLine@2
+    #   inputs:
+    #     script: |
+    #       ls $(System.DefaultWorkingDirectory)
     # - task: AzureRmWebAppDeployment@3
     #   displayName: Deploy Web App to Azure App Service
     #   enabled: 'true'
@@ -270,14 +270,14 @@ stages:
 
 
 
-    - task: DownloadBuildArtifacts@0    
-      displayName: Download DacPac
-      inputs:
-        buildType: 'current'
-        downloadType: 'single'
-        artifactName: 'dacpac'
-        itemPattern: '**/*.dacpac'
-        downloadPath: '$(System.DefaultWorkingDirectory)'
+    # - task: DownloadBuildArtifacts@0    
+    #   displayName: Download DacPac
+    #   inputs:
+    #     buildType: 'current'
+    #     downloadType: 'single'
+    #     artifactName: 'dacpac'
+    #     itemPattern: '**/*.dacpac'
+    #     downloadPath: '$(System.DefaultWorkingDirectory)'
 
     # - task: SqlAzureDacpacDeployment@1
     #   displayName: Azure SQL Publish DacPac to SQL Azure
@@ -289,14 +289,14 @@ stages:
     #     SqlPassword: '$(Database.Password)'
     #     DacpacFile: '$(System.DefaultWorkingDirectory)/dacpac/WebApp.Database.dacpac'
 
-    - task: DownloadBuildArtifacts@0    
-      displayName: Download Selenium Tests
-      inputs:
-        buildType: 'current'
-        downloadType: 'single'
-        artifactName: 'ui-tests'
-        itemPattern: ''
-        downloadPath: '$(System.DefaultWorkingDirectory)'
+    # - task: DownloadBuildArtifacts@0    
+    #   displayName: Download Selenium Tests
+    #   inputs:
+    #     buildType: 'current'
+    #     downloadType: 'single'
+    #     artifactName: 'ui-tests'
+    #     itemPattern: ''
+    #     downloadPath: '$(System.DefaultWorkingDirectory)'
 
     # - task: VSTest@2
     #   displayName: Selenium UI Tests
